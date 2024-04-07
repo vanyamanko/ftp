@@ -198,15 +198,12 @@ void client_login(void)
 }
 
 
-
-
-
 int main(int argc, char* argv[]) 
 {		
 	int data_sock, retcode;
 	char buffer[MAXSIZE];
 	struct command cmd;	
-	struct addrinfo hints, *res, *rp;
+	struct addrinfo hints, *res;
 
 	if (argc != 3) {
 		printf("usage: ./client hostname port\n");
@@ -224,22 +221,19 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 	
-	for (rp = res; rp != NULL; rp = rp->ai_next) {
-		sock_control = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+	sock_control = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 
-		if (sock_control < 0)
-			continue;
-
-		if(connect(sock_control, res->ai_addr, res->ai_addrlen)==0) {
-			break;
-		} else {
-			perror("connecting stream socket");
-			exit(1);
-		}
-		close(sock_control);
+	if (sock_control < 0){
+		perror("failed to create socket");
+		exit(1);	
 	}
-	freeaddrinfo(rp);
 
+	if(connect(sock_control, res->ai_addr, res->ai_addrlen)) {
+		perror("connecting stream socket");
+		exit(1);
+	}
+
+	freeaddrinfo(res);
 
 	printf("Connected to %s.\n", host);
 	print_reply(read_reply()); 

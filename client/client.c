@@ -97,7 +97,7 @@ int client_get(int data_sock, char* arg)
 }
 
 
-void client_put(int sock_control, int sock_data, char* filename)
+void client_put(int sock_data, char* filename)
 {	
 	FILE* fd = NULL;
 	char data[MAXSIZE];
@@ -106,10 +106,9 @@ void client_put(int sock_control, int sock_data, char* filename)
 	fd = fopen(filename, "r");
 	
 	if (!fd) {	
-		send_response(sock_control, 550);
+		printf("File not fount!");
 		
 	} else {	
-		send_response(sock_control, 150);
 	
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
@@ -122,8 +121,6 @@ void client_put(int sock_control, int sock_data, char* filename)
 				perror("error sending file\n");
 
 		} while (num_read > 0);													
-			
-		send_response(sock_control, 226);
 
 		fclose(fd);
 	}
@@ -313,9 +310,8 @@ int main(int argc, char* argv[])
 				print_reply(read_reply()); 
 			}
 			else if (strcmp(cmd.code, "CPUT") == 0) {
-				//printf("client put: %s\n", cmd.arg);
-				client_put(sock_control, data_sock, cmd.arg);
-				//print_reply(read_reply()); 
+				printf("The file is transferred to the server!\n");
+				client_put(data_sock, cmd.arg);
 			}
 			close(data_sock);
 		}

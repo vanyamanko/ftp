@@ -203,7 +203,7 @@ void client_login(void)
 
 int main(int argc, char* argv[]) 
 {		
-	int data_sock, retcode, s;
+	int data_sock, retcode;
 	char buffer[MAXSIZE];
 	struct command cmd;	
 	struct addrinfo hints, *res, *rp;
@@ -217,12 +217,10 @@ int main(int argc, char* argv[])
 	char *port = argv[2];
 
 	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	
-	s = getaddrinfo(host, port, &hints, &res);
-	if (s != 0) {
-		printf("getaddrinfo() error %s", gai_strerror(s));
+	if (getaddrinfo(host, port, &hints, &res)) {
+		printf("getaddrinfo() error");
 		exit(1);
 	}
 	

@@ -51,8 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-#XCode
-*.xcodeproj
+#VSCode
+/.vscode/
 
 #MacOS
 .DS_Store
@@ -61,3 +61,6 @@ dkms.conf
 *.o
 /server/server
 /client/client
+
+#tmp files
+tmp.txt

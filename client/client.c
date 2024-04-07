@@ -106,10 +106,11 @@ void client_put(int sock_data, char* filename)
 	fd = fopen(filename, "r");
 	
 	if (!fd) {	
-		printf("File not fount!");
+		printf("File not fount! You creted empty file.\n");
 		
 	} else {	
-	
+
+		printf("The file is transferred to the server!\n");
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
 
@@ -306,11 +307,9 @@ int main(int argc, char* argv[])
 					continue; 
 				}
 				client_get(data_sock, cmd.arg);
-				printf("client get: %s", cmd.arg);
 				print_reply(read_reply()); 
 			}
 			else if (strcmp(cmd.code, "CPUT") == 0) {
-				printf("The file is transferred to the server!\n");
 				client_put(data_sock, cmd.arg);
 			}
 			close(data_sock);

@@ -54,7 +54,7 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 		strcpy(cstruct->code, "LIST");		
 	}
 	else if (strcmp(buf, "get") == 0) {
-		strcpy(cstruct->code, "RETR");		
+		strcpy(cstruct->code, "CGET");		
 	}
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
@@ -63,7 +63,7 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 		return -1;
 	}
 
-	memset(buf, 0, 400);
+	memset(buf, 0, 512);
 	strcpy(buf, cstruct->code);
 
 	if (arg != NULL) {
@@ -142,11 +142,10 @@ int client_list(int sock_data, int sock_con)
 int client_send_cmd(struct command *cmd)
 {
 	char buffer[MAXSIZE];
-	int rc;
 
 	sprintf(buffer, "%s %s", cmd->code, cmd->arg);
 	
-	rc = send(sock_control, buffer, (int)strlen(buffer), 0);	
+	int rc = send(sock_control, buffer, strlen(buffer), 0);	
 	if (rc < 0) {
 		perror("Error sending command to server");
 		return -1;
@@ -154,8 +153,6 @@ int client_send_cmd(struct command *cmd)
 	
 	return 0;
 }
-
-
 
 
 void client_login(void)
@@ -185,15 +182,14 @@ void client_login(void)
 	int retcode = read_reply();
 	switch (retcode) {
 		case 430:
-			printf("Invalid username/password.\n");
+			printf("430 Invalid username/password.\n");
 			exit(0);
 		case 230:
-			printf("Successful login.\n");
+			printf("230 Successful login.\n");
 			break;
 		default:
 			perror("error reading message from server");
 			exit(1);		
-			break;
 	}
 }
 
@@ -271,7 +267,7 @@ int main(int argc, char* argv[])
 			if (strcmp(cmd.code, "LIST") == 0) {
 				client_list(data_sock, sock_control);
 			} 
-			else if (strcmp(cmd.code, "RETR") == 0) {
+			else if (strcmp(cmd.code, "CGET") == 0) {
 				if (read_reply() == 550) {
 					print_reply(550);		
 					close(data_sock);

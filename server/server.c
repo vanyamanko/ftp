@@ -70,6 +70,23 @@ void server_get(int sock_control, int sock_data, char* filename)
 	}
 }
 
+int server_put(int data_sock, char* arg)
+{
+    char data[MAXSIZE];
+    int size;
+    FILE* fd = fopen(arg, "w");
+    
+    while ((size = recv(data_sock, data, MAXSIZE, 0)) > 0) {
+        fwrite(data, 1, size, fd);
+    }
+
+    if (size < 0) {
+        perror("error\n");
+    }
+
+    fclose(fd);
+    return 0;
+}
 
 int server_list(int sock_data, int sock_control)
 {
@@ -216,7 +233,7 @@ int server_login(int sock_control)
 
 
 int server_recv_cmd(int sock_control, char*cmd, char*arg)
-{	
+{
 	int rc = 200;
 	char buffer[MAXSIZE];
 	
@@ -233,11 +250,11 @@ int server_recv_cmd(int sock_control, char*cmd, char*arg)
 	strncpy(cmd, buffer, 4);
 	char *tmp = buffer + 5;
 	strcpy(arg, tmp);
-	
+
 	if (strcmp(cmd, "QUIT")==0) {
 		rc = 221;
 	} else if((strcmp(cmd, "USER")==0) || (strcmp(cmd, "PASS")==0) ||
-			(strcmp(cmd, "LIST")==0) || (strcmp(cmd, "CGET")==0)) {
+		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "CGET")==0) || (strcmp(cmd, "CPUT")==0)) {
 		rc = 200;
 	} else { 
 		rc = 502;
@@ -246,10 +263,6 @@ int server_recv_cmd(int sock_control, char*cmd, char*arg)
 	send_response(sock_control, rc);	
 	return rc;
 }
-
-
-
-
 
 
 void server_process(int sock_control)
@@ -286,7 +299,11 @@ void server_process(int sock_control)
 				server_list(sock_data, sock_control);
 			} else if (strcmp(cmd, "CGET")==0) { 
 				server_get(sock_control, sock_data, arg);
+			} else if (strcmp(cmd, "CPUT")==0)
+			{
+				server_put(sock_data, arg);
 			}
+			
 		
 			close(sock_data);
 		} 

@@ -56,6 +56,9 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	else if (strcmp(buf, "get") == 0) {
 		strcpy(cstruct->code, "CGET");		
 	}
+	else if (strcmp(buf, "put") == 0) {
+		strcpy(cstruct->code, "CPUT");
+	}
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
 	}
@@ -93,6 +96,38 @@ int client_get(int data_sock, char* arg)
     return 0;
 }
 
+
+void client_put(int sock_control, int sock_data, char* filename)
+{	
+	FILE* fd = NULL;
+	char data[MAXSIZE];
+	size_t num_read;							
+		
+	fd = fopen(filename, "r");
+	
+	if (!fd) {	
+		send_response(sock_control, 550);
+		
+	} else {	
+		send_response(sock_control, 150);
+	
+		do {
+			num_read = fread(data, 1, MAXSIZE, fd);
+
+			if (num_read < 0) {
+				printf("error in fread()\n");
+			}
+
+			if (send(sock_data, data, num_read, 0) < 0)
+				perror("error sending file\n");
+
+		} while (num_read > 0);													
+			
+		send_response(sock_control, 226);
+
+		fclose(fd);
+	}
+}
 
 int client_open_conn(int sock_con)
 {
@@ -274,7 +309,13 @@ int main(int argc, char* argv[])
 					continue; 
 				}
 				client_get(data_sock, cmd.arg);
+				printf("client get: %s", cmd.arg);
 				print_reply(read_reply()); 
+			}
+			else if (strcmp(cmd.code, "CPUT") == 0) {
+				//printf("client put: %s\n", cmd.arg);
+				client_put(sock_control, data_sock, cmd.arg);
+				//print_reply(read_reply()); 
 			}
 			close(data_sock);
 		}

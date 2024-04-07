@@ -11,6 +11,7 @@ int server_start_data_conn(int sock_control);
 
 int server_check_user(char*user, char*pass);
 
+int server_put(int sock_data, char* filename);
 
 int server_login(int sock_control);
 

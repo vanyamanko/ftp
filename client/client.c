@@ -80,6 +80,7 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 
 int client_get(int data_sock, char* arg)
 {
+	printf("Waiting for server response...\n");	
     char data[MAXSIZE];
     int size;
     FILE* fd = fopen(arg, "w");
@@ -110,7 +111,7 @@ void client_put(int sock_data, char* filename)
 		
 	} else {	
 
-		printf("The file is transferred to the server!\n");
+		printf("Waiting for server response...\n");
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
 
@@ -123,6 +124,7 @@ void client_put(int sock_data, char* filename)
 
 		} while (num_read > 0);													
 
+		printf("The file is transferred to the server!\n");
 		fclose(fd);
 	}
 }

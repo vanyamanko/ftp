@@ -3,8 +3,10 @@ CFLAGS_COMMON = -std=c11 -pedantic -W -Wall -Wextra
 CFLAGS_DEBUG = $(CFLAGS_COMMON) -g -ggdb
 CFLAGS_RELEASE = $(CFLAGS_COMMON) -Werror
 
-SRCS = server.c ../common/common.c
-OBJS = $(SRCS:.c=.o)
+OBJDIR = ../target
+
+SRCS = server.c ../common/common.c server_func.c
+OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 EXEC = server
 
 .PHONY: all clean
@@ -18,8 +20,14 @@ else
 	$(CC) $(CFLAGS_RELEASE) $(OBJS) -o $(EXEC)
 endif
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS_COMMON) -c $< -o $@
 
+$(OBJDIR)/common.o: ../common/common.c | $(OBJDIR)
+	$(CC) $(CFLAGS_COMMON) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -rf $(OBJDIR) $(EXEC)

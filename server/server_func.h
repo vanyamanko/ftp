@@ -1,5 +1,5 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_FUNC_H
+#define SERVER_FUNC_H
 
 #include "../common/common.h"
 
@@ -17,8 +17,14 @@ int server_login(int sock_control);
 
 int server_recv_cmd(int sock_control, char*cmd, char*arg);
 
+int socket_connect(int port, char*host);
+
+int recv_data(int sockfd, char* buf, int bufsize);
+
+int send_response(int sockfd, int rc);
+
+void trimstr(char *str, int n);
 
 void server_process(int sock_control);
-
 
 #endif

@@ -20,7 +20,10 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	fflush(stdout); 	
 
 	read_input(buf, size);
-		
+
+	char terminal_cmd[MAXSIZE];
+	strcpy(terminal_cmd, buf);
+
 	char *arg = NULL;
 	arg = strtok (buf," ");
 	arg = strtok (NULL, " ");
@@ -42,7 +45,8 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 		strcpy(cstruct->code, "QUIT");		
 	}
 	else {
-		return -1;
+		system(terminal_cmd);
+		return 1;
 	}
 
 	memset(buf, 0, 512);

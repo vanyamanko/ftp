@@ -48,8 +48,7 @@ int main(int argc, char* argv[])
 
 	while (1) { 
 
-		if (client_read_command(buffer, sizeof buffer, &cmd) < 0) {
-			printf("Invalid command\n");
+		if (client_read_command(buffer, sizeof buffer, &cmd) != 0) {
 			continue;	
 		}
 

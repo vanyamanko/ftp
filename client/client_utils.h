@@ -3,6 +3,7 @@
 
 #include "../common/common.h"
 
+void client_info(void);
 int client_get(int data_sock, char* arg);
 void client_put(int data_sock, char* arg);
 int client_list(int sock_data, int sock_con);

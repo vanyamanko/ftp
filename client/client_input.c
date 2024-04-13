@@ -15,8 +15,15 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 {
 	memset(cstruct->code, 0, sizeof(cstruct->code));
 	memset(cstruct->arg, 0, sizeof(cstruct->arg));
-	
+
+	printf("\x1b[35m");
+	printf("\n");
+	system("pwd");
+
+	printf("\x1b[32m");
 	printf("client> ");	
+
+	printf("\x1b[0m");
 	fflush(stdout); 	
 
 	read_input(buf, size);
@@ -44,11 +51,19 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
 	}
+	else if (strcmp(buf, "info") == 0) {
+		client_info();
+		system("less info.txt");
+		system("rm info.txt");
+		return 1;
+	}
 	else {
 		system(terminal_cmd);
 		if (strcmp(buf, "cd") == 0) {
 			chdir(arg);
-			return 1;
+			if(arg == NULL) {
+				chdir("/");
+			}
 		}
 		return 1;
 	}

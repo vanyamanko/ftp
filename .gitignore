@@ -63,5 +63,6 @@ dkms.conf
 /client/client
 target/
 #tmp files
+info.txt
 tmp.txt
 

@@ -1,5 +1,52 @@
 #include "client_utils.h"
 
+void client_info(void)
+{
+    FILE *file = fopen("info.txt", "a");  
+	    if (file == NULL) {
+        printf("Failed to open info.txt\n");
+        return;
+    }
+
+    fprintf(file, "INFO(1)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "     info - get information about utils\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The info utility displays documentation about all utils.\n\n\n\n");
+
+    fprintf(file, "GET(2)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "     get - get a file from the server\n\n");
+	fprintf(file, "SYNOPSIS\n");
+	fprintf(file, "     get <file_name>\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The get command gets a file from the server and saves it locally in the current directory.\n\n\n\n");
+
+    fprintf(file, "PUT(3)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "     put - put a file on the server\n\n");
+	fprintf(file, "SYNOPSIS\n");
+	fprintf(file, "     put <file_name>\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The put command uploads a file to the server. If the file is not found, an empty file will be created on the server.\n\n\n\n");
+
+    fprintf(file, "LIST(4)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "      list - list files on the server\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The list command displays the contents of the server files.\n\n\n\n");
+	
+    fprintf(file, "DELETE(5)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "     delete - delete a file from the server\n\n");
+	fprintf(file, "SYNOPSIS\n");
+	fprintf(file, "     delete <file_name>\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The delete command removes a file from the server.\n");
+
+    fclose(file);
+}
+
 int client_get(int data_sock, char* arg)
 {
 	printf("Waiting for server response...\n");	

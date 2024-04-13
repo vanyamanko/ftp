@@ -4,6 +4,7 @@
 #include "../common/common.h"
 #include "client_network.h"
 #include "client_reply.h"
+#include "client_utils.h"
 
 void read_input(char* buffer, int size);
 int client_read_command(char* buf, int size, struct command *cstruct);

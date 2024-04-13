@@ -46,6 +46,10 @@ int main(int argc, char* argv[])
 
 	client_login(sock_control);
 
+	printf("\x1b[34m");
+	printf("info - get information about utils\n");
+	printf("\x1b[0m");
+
 	while (1) { 
 
 		if (client_read_command(buffer, sizeof buffer, &cmd) != 0) {
@@ -61,12 +65,7 @@ int main(int argc, char* argv[])
 		if (retcode == 221) {
 			print_reply(221);		
 			break;
-		}
-		
-		if (retcode == 502) {
-			printf("%d Invalid command.\n", retcode);
 		} else {			
-		
 			if ((data_sock = client_open_conn(sock_control)) < 0) {
 				perror("Error opening socket for data connection");
 				exit(1);

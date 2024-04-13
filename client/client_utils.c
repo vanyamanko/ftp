@@ -42,7 +42,9 @@ void client_info(void)
 	fprintf(file, "SYNOPSIS\n");
 	fprintf(file, "     delete <file_name>\n\n");
     fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "     The delete command removes a file from the server.\n");
+    fprintf(file, "     The delete command removes a file from the server.\n\n\n\n");
+
+	fprintf(file, "You can also use terminal commands.\n");
 
     fclose(file);
 }

@@ -13,6 +13,8 @@ int server_check_user(char*user, char*pass);
 
 int server_put(int sock_data, char* filename);
 
+int server_delete(int sock_control, char* arg);
+
 int server_login(int sock_control);
 
 int server_recv_cmd(int sock_control, char*cmd, char*arg);

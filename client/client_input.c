@@ -51,6 +51,9 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
 	}
+	else if (strcmp(buf, "delete") == 0) {
+		strcpy(cstruct->code, "CDEL");		
+	}
 	else if (strcmp(buf, "info") == 0) {
 		client_info();
 		system("less info.txt");

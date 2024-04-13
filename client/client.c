@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 			exit(1);
 		}
 
-		retcode = read_reply(sock_control);		
+		retcode = read_reply(sock_control);	
 		if (retcode == 221) {
 			print_reply(221);		
 			break;
@@ -81,6 +81,14 @@ int main(int argc, char* argv[])
 					continue; 
 				}
 				client_get(data_sock, cmd.arg);
+				print_reply(read_reply(sock_control)); 
+			}
+			else if (strcmp(cmd.code, "CDEL") == 0) {
+				if (read_reply(sock_control) == 550) {
+					print_reply(550);		
+					close(data_sock);
+					continue;
+				}
 				print_reply(read_reply(sock_control)); 
 			}
 			else if (strcmp(cmd.code, "CPUT") == 0) {

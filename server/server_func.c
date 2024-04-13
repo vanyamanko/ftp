@@ -50,13 +50,28 @@ int server_put(int data_sock, char* arg)
     return 0;
 }
 
+int server_delete(int sock_control, char* arg)
+{
+
+	send_response(sock_control, 150);
+	char del_file[MAXSIZE];
+	sprintf(del_file, "%s %s", "rm", arg);
+    int rs = system(del_file);
+	if (!rs) {
+        send_response(sock_control, 226);
+    } else {
+        send_response(sock_control, 550);
+    }
+    return 0;
+}
+
 int server_list(int sock_data, int sock_control)
 {
 	char data[MAXSIZE];
 	size_t num_read;									
 	FILE* fd;
 
-	int rs = system("ls -l | tail -n+2 > tmp.txt");
+	int rs = system("ls -l | grep -v 'tmp.txt' | tail -n+2 > tmp.txt");
 	if ( rs < 0) {
 		exit(1);
 	}
@@ -82,6 +97,8 @@ int server_list(int sock_data, int sock_control)
 	fclose(fd);
 
 	send_response(sock_control, 226);	
+
+	system("rm tmp.txt");
 
 	return 0;	
 }
@@ -266,7 +283,7 @@ int server_recv_cmd(int sock_control, char*cmd, char*arg)
 	if (strcmp(cmd, "QUIT")==0) {
 		rc = 221;
 	} else if((strcmp(cmd, "USER")==0) || (strcmp(cmd, "PASS")==0) ||
-		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "CGET")==0) || (strcmp(cmd, "CPUT")==0)) {
+		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "CGET")==0) || (strcmp(cmd, "CPUT")==0) || (strcmp(cmd, "CDEL")==0)) {
 		rc = 200;
 	} else { 
 		rc = 502;
@@ -311,12 +328,12 @@ void server_process(int sock_control)
 				server_list(sock_data, sock_control);
 			} else if (strcmp(cmd, "CGET")==0) { 
 				server_get(sock_control, sock_data, arg);
-			} else if (strcmp(cmd, "CPUT")==0)
-			{
+			} else if (strcmp(cmd, "CPUT")==0) {
 				server_put(sock_data, arg);
+			} else if (strcmp(cmd, "CDEL")==0) {
+				server_delete(sock_control, arg);
 			}
 			
-		
 			close(sock_data);
 		} 
 	}

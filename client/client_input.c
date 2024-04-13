@@ -46,6 +46,10 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	}
 	else {
 		system(terminal_cmd);
+		if (strcmp(buf, "cd") == 0) {
+			chdir(arg);
+			return 1;
+		}
 		return 1;
 	}
 

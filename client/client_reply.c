@@ -13,16 +13,16 @@ void print_reply(int rc)
 {
 	switch (rc) {
 		case 220:
-			printf("220 Welcome, server ready.\n");
+			printf("Welcome, server ready.\n");
 			break;
 		case 221:
-			printf("221 Goodbye!\n");
+			printf("Goodbye!\n");
 			break;
 		case 226:
-			printf("226 Closing data connection. Requested file action successful.\n");
+			printf("Requested file action successful.\n");
 			break;
 		case 550:
-			printf("550 Requested action not taken. File unavailable.\n");
+			printf("Requested action not taken. File unavailable.\n");
 			break;
 	}
 	

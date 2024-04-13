@@ -109,10 +109,10 @@ void client_login(int sock_control)
 	int retcode = read_reply(sock_control);
 	switch (retcode) {
 		case 430:
-			printf("430 Invalid username/password.\n");
+			printf("Invalid username/password.\n");
 			exit(0);
 		case 230:
-			printf("230 Successful login.\n");
+			printf("Successful login.\n");
 			break;
 		default:
 			perror("error reading message from server");

@@ -44,6 +44,12 @@ void client_info(void)
     fprintf(file, "DESCRIPTION\n");
     fprintf(file, "     The delete command removes a file from the server.\n\n\n\n");
 
+	fprintf(file, "QUIT(6)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "      quit - exit the program\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     Terminate the client process.\n\n\n\n");
+
 	fprintf(file, "You can also use terminal commands.\n");
 
     fclose(file);
@@ -95,7 +101,7 @@ void client_put(int sock_data, char* filename)
 
 		} while (num_read > 0);													
 
-		printf("The file is transferred to the server!\n");
+		printf("Requested file action successful.\n");
 		fclose(fd);
 	}
 }

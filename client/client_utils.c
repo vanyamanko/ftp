@@ -8,11 +8,11 @@ void client_info(void)
         return;
     }
 
-    fprintf(file, "INFO(1)\n\n");
+    fprintf(file, "HELP(1)\n\n");
     fprintf(file, "NAME\n");
-    fprintf(file, "     info - get information about utils\n\n");
+    fprintf(file, "     help - get information about utils\n\n");
     fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "     The info utility displays documentation about all utils.\n\n\n\n");
+    fprintf(file, "     The help utility displays documentation about all utils.\n\n\n\n");
 
     fprintf(file, "GET(2)\n\n");
     fprintf(file, "NAME\n");

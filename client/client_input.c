@@ -43,18 +43,18 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 		strcpy(cstruct->code, "LIST");		
 	}
 	else if (strcmp(buf, "get") == 0) {
-		strcpy(cstruct->code, "CGET");		
+		strcpy(cstruct->code, "RETR");		
 	}
 	else if (strcmp(buf, "put") == 0) {
-		strcpy(cstruct->code, "CPUT");
+		strcpy(cstruct->code, "STOR");
 	}
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
 	}
 	else if (strcmp(buf, "delete") == 0) {
-		strcpy(cstruct->code, "CDEL");		
+		strcpy(cstruct->code, "DELE");		
 	}
-	else if (strcmp(buf, "info") == 0) {
+	else if (strcmp(buf, "help") == 0) {
 		client_info();
 		system("less info.txt");
 		system("rm info.txt");

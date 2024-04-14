@@ -283,7 +283,7 @@ int server_recv_cmd(int sock_control, char*cmd, char*arg)
 	if (strcmp(cmd, "QUIT")==0) {
 		rc = 221;
 	} else if((strcmp(cmd, "USER")==0) || (strcmp(cmd, "PASS")==0) ||
-		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "CGET")==0) || (strcmp(cmd, "CPUT")==0) || (strcmp(cmd, "CDEL")==0)) {
+		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "RETR")==0) || (strcmp(cmd, "STOR")==0) || (strcmp(cmd, "DELE")==0)) {
 		rc = 200;
 	} else { 
 		rc = 502;
@@ -302,7 +302,6 @@ void server_process(int sock_control)
 
 
 	send_response(sock_control, 220);
-
 
 	if (server_login(sock_control) == 1) {
 		send_response(sock_control, 230);
@@ -326,11 +325,11 @@ void server_process(int sock_control)
 
 			if (strcmp(cmd, "LIST")==0) { 
 				server_list(sock_data, sock_control);
-			} else if (strcmp(cmd, "CGET")==0) { 
+			} else if (strcmp(cmd, "RETR")==0) { 
 				server_get(sock_control, sock_data, arg);
-			} else if (strcmp(cmd, "CPUT")==0) {
+			} else if (strcmp(cmd, "STOR")==0) {
 				server_put(sock_data, arg);
-			} else if (strcmp(cmd, "CDEL")==0) {
+			} else if (strcmp(cmd, "DELE")==0) {
 				server_delete(sock_control, arg);
 			}
 			

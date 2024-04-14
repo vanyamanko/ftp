@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 	client_login(sock_control);
 
 	printf("\x1b[34m");
-	printf("info - get information about utils\n");
+	printf("help - get information about utils\n");
 	printf("\x1b[0m");
 
 	while (1) { 
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 			if (strcmp(cmd.code, "LIST") == 0) {
 				client_list(data_sock, sock_control);
 			} 
-			else if (strcmp(cmd.code, "CGET") == 0) {
+			else if (strcmp(cmd.code, "RETR") == 0) {
 				if (read_reply(sock_control) == 550) {
 					print_reply(550);		
 					close(data_sock);
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 				client_get(data_sock, cmd.arg);
 				print_reply(read_reply(sock_control)); 
 			}
-			else if (strcmp(cmd.code, "CDEL") == 0) {
+			else if (strcmp(cmd.code, "DELE") == 0) {
 				if (read_reply(sock_control) == 550) {
 					print_reply(550);		
 					close(data_sock);
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 				}
 				print_reply(read_reply(sock_control)); 
 			}
-			else if (strcmp(cmd.code, "CPUT") == 0) {
+			else if (strcmp(cmd.code, "STOR") == 0) {
 				client_put(data_sock, cmd.arg);
 			}
 			close(data_sock);

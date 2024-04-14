@@ -14,7 +14,7 @@ void client_info(void)
     fprintf(file, "DESCRIPTION\n");
     fprintf(file, "     The help utility displays documentation about all utils.\n\n\n\n");
 
-    fprintf(file, "GET(2)\n\n");
+    fprintf(file, "RETR(2)\n\n");
     fprintf(file, "NAME\n");
     fprintf(file, "     get - get a file from the server\n\n");
 	fprintf(file, "SYNOPSIS\n");
@@ -22,7 +22,7 @@ void client_info(void)
     fprintf(file, "DESCRIPTION\n");
     fprintf(file, "     The get command gets a file from the server and saves it locally in the current directory.\n\n\n\n");
 
-    fprintf(file, "PUT(3)\n\n");
+    fprintf(file, "STOR(3)\n\n");
     fprintf(file, "NAME\n");
     fprintf(file, "     put - put a file on the server\n\n");
 	fprintf(file, "SYNOPSIS\n");
@@ -36,7 +36,7 @@ void client_info(void)
     fprintf(file, "DESCRIPTION\n");
     fprintf(file, "     The list command displays the contents of the server files.\n\n\n\n");
 	
-    fprintf(file, "DELETE(5)\n\n");
+    fprintf(file, "DELE(5)\n\n");
     fprintf(file, "NAME\n");
     fprintf(file, "     delete - delete a file from the server\n\n");
 	fprintf(file, "SYNOPSIS\n");

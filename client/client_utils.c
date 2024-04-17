@@ -84,17 +84,13 @@ void client_put(int sock_data, char* filename)
 	fd = fopen(filename, "r");
 	
 	if (!fd) {	
-		printf("File not fount! You creted empty file.\n");
+		printf("File not fount! You created empty file.\n");
 		
 	} else {	
 
 		printf("Waiting for server response...\n");
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
-
-			if (num_read < 0) {
-				printf("error in fread()\n");
-			}
 
 			if (send(sock_data, data, num_read, 0) < 0)
 				perror("error sending file\n");
@@ -121,10 +117,6 @@ int client_list(int sock_data, int sock_con)
 	while ((num_recvd = recv(sock_data, buf, MAXSIZE, 0)) > 0) {
         	printf("%s", buf);
 		memset(buf, 0, sizeof(buf));
-	}
-	
-	if (num_recvd < 0) {
-	        perror("error");
 	}
 
 	if (recv(sock_con, &tmp, sizeof tmp, 0) < 0) {

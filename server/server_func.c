@@ -17,10 +17,6 @@ void server_get(int sock_control, int sock_data, char* filename)
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
 
-			if (num_read < 0) {
-				printf("error in fread()\n");
-			}
-
 			if (send(sock_data, data, num_read, 0) < 0)
 				perror("error sending file\n");
 
@@ -107,9 +103,7 @@ int recv_data(int sockfd, char* buf, int bufsize){
 	size_t num_bytes;
 	memset(buf, 0, bufsize);
 	num_bytes = recv(sockfd, buf, bufsize, 0);
-	if (num_bytes < 0) {
-		return -1;
-	}
+	
 	return num_bytes;
 }
 

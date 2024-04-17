@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS_COMMON = -std=c11 -pedantic -W -Wall -Wextra
+CFLAGS_COMMON = -W -Wall -Wno-unused-parameter -Wno-unused-variable -std=c11 -pedantic
 CFLAGS_DEBUG = $(CFLAGS_COMMON) -g -ggdb
 CFLAGS_RELEASE = $(CFLAGS_COMMON) -Werror
 

@@ -1,5 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
+#define _DEFAULT_SOURCE
 
 #include <arpa/inet.h>
 #include <ctype.h>

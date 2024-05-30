@@ -57,7 +57,14 @@ void client_info(void)
 
 int client_get(int data_sock, char* arg)
 {
-	printf("Waiting for server response...\n");	
+	printf("Waiting for server response...\n");
+
+    char dir_flag = '0';
+    recv(data_sock, &dir_flag, 1, 0);
+    if(dir_flag == '1') {
+        strcat(arg, ".zip");
+    }
+
     char data[MAXSIZE];
     int size;
     FILE* fd = fopen(arg, "w");

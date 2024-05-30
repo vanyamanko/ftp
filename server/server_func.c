@@ -5,7 +5,22 @@ void server_get(int sock_control, int sock_data, char* filename)
 	FILE* fd = NULL;
 	char data[MAXSIZE];
 	size_t num_read;							
-		
+	int rm_flag = 0;
+	char dir_flag = '0';
+
+    if (is_directory(filename)) {
+        char zip_cmd[MAXSIZE] = "zip -r ";
+        strcat(zip_cmd, filename);
+        strcat(zip_cmd, ".zip "); 
+        strcat(zip_cmd, filename);
+        strcat(zip_cmd, " > temp.txt; rm temp.txt");
+        system(zip_cmd);
+        strcat(filename, ".zip");
+        rm_flag = 1;
+		dir_flag = '1';
+    }
+	send(sock_data, &dir_flag, 1, 0);
+
 	fd = fopen(filename, "r");
 	
 	if (!fd) {	
@@ -17,7 +32,7 @@ void server_get(int sock_control, int sock_data, char* filename)
 		do {
 			num_read = fread(data, 1, MAXSIZE, fd);
 
-			if (send(sock_data, data, num_read, 0) < 0)
+			if (send(sock_data, &data, num_read, 0) < 0)
 				perror("error sending file\n");
 
 		} while (num_read > 0);													
@@ -26,6 +41,12 @@ void server_get(int sock_control, int sock_data, char* filename)
 
 		fclose(fd);
 	}
+	
+	if(rm_flag) {
+        char rm_file_cmd[MAXSIZE] = "rm ";
+        strcat(rm_file_cmd, filename);
+        system(rm_file_cmd);
+    }
 }
 
 int server_put(int data_sock, char* arg)
@@ -51,7 +72,11 @@ int server_delete(int sock_control, char* arg)
 
 	send_response(sock_control, 150);
 	char del_file[MAXSIZE];
-	sprintf(del_file, "%s %s", "rm", arg);
+	if(is_directory(arg)) {
+		sprintf(del_file, "%s %s", "rm -r", arg);
+	} else {
+		sprintf(del_file, "%s %s", "rm", arg);	
+	}
     int rs = system(del_file);
 	if (!rs) {
         send_response(sock_control, 226);

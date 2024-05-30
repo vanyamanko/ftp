@@ -48,6 +48,9 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	else if (strcmp(buf, "put") == 0) {
 		strcpy(cstruct->code, "STOR");
 	}
+	else if (strcmp(buf, "cwd") == 0) {
+		strcpy(cstruct->code, "CWD");
+	}
 	else if (strcmp(buf, "quit") == 0) {
 		strcpy(cstruct->code, "QUIT");		
 	}

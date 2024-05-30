@@ -3,6 +3,8 @@
 
 #include "../common/common.h"
 
+void server_cwd(int sock_data, int sock_control, char* arg); 
+
 void server_get(int sock_control, int sock_data, char* filename);
 
 int server_list(int sock_data, int sock_control);

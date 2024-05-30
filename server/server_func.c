@@ -98,6 +98,10 @@ int server_list(int sock_data, int sock_control)
 
 	return 0;	
 }
+void server_cwd(int sock_data, int sock_control, char* arg) 
+{	
+	chdir(arg);
+}
 
 int recv_data(int sockfd, char* buf, int bufsize){
 	size_t num_bytes;
@@ -270,14 +274,23 @@ int server_recv_cmd(int sock_control, char*cmd, char*arg)
 		return -1;
 	}
 	
-	strncpy(cmd, buffer, 4);
-	char *tmp = buffer + 5;
-	strcpy(arg, tmp);
+	size_t bufferLength = strlen(buffer);
+	size_t spacePosition = strcspn(buffer, " ");
+
+	strncpy(cmd, buffer, spacePosition);
+	cmd[spacePosition] = '\0'; 
+	if((strcmp(cmd, "CWD")==0)) {
+		char *tmp = buffer + 4;
+		strcpy(arg, tmp);
+	} else {
+		char *tmp = buffer + 5;
+		strcpy(arg, tmp);
+	}
 
 	if (strcmp(cmd, "QUIT")==0) {
 		rc = 221;
 	} else if((strcmp(cmd, "USER")==0) || (strcmp(cmd, "PASS")==0) ||
-		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "RETR")==0) || (strcmp(cmd, "STOR")==0) || (strcmp(cmd, "DELE")==0)) {
+		    (strcmp(cmd, "LIST")==0) || (strcmp(cmd, "RETR")==0) || (strcmp(cmd, "STOR")==0) || (strcmp(cmd, "DELE")==0) || (strcmp(cmd, "CWD")==0)) {
 		rc = 200;
 	} else { 
 		rc = 502;
@@ -325,6 +338,9 @@ void server_process(int sock_control)
 				server_put(sock_data, arg);
 			} else if (strcmp(cmd, "DELE")==0) {
 				server_delete(sock_control, arg);
+			}
+			else if (strcmp(cmd, "CWD")==0) {
+				server_cwd(sock_data, sock_control, arg);
 			}
 			
 			close(sock_data);

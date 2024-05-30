@@ -30,4 +30,6 @@ int socket_create(int port);
 
 int socket_accept(int sock_listen);
 
+int is_directory(const char *dir_name);
+
 #endif

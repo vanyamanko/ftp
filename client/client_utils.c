@@ -80,7 +80,18 @@ void client_put(int sock_data, char* filename)
 	FILE* fd = NULL;
 	char data[MAXSIZE];
 	size_t num_read;							
-		
+    int rm_flag = 0;
+
+    if (is_directory(filename)) {
+        char zip_cmd[MAXSIZE] = "zip -r ";
+        strcat(zip_cmd, filename);
+        strcat(zip_cmd, ".zip "); 
+        strcat(zip_cmd, filename);
+        strcat(zip_cmd, " > temp.txt; rm temp.txt");
+        system(zip_cmd);
+        strcat(filename, ".zip");
+        rm_flag = 1;
+    }
 	fd = fopen(filename, "r");
 	
 	if (!fd) {	
@@ -100,6 +111,12 @@ void client_put(int sock_data, char* filename)
 		printf("Requested file action successful.\n");
 		fclose(fd);
 	}
+    
+    if(rm_flag) {
+        char rm_file_cmd[MAXSIZE] = "rm ";
+        strcat(rm_file_cmd, filename);
+        system(rm_file_cmd);
+    }
 }
 
 int client_list(int sock_data, int sock_con)

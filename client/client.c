@@ -51,9 +51,14 @@ int main(int argc, char* argv[])
 	printf("\x1b[0m");
 
 	while (1) { 
-
-		if (client_read_command(buffer, sizeof buffer, &cmd) != 0) {
+		int dir_flag = 0;
+		if (client_read_command(buffer, sizeof buffer, &cmd, &dir_flag) != 0) {
 			continue;	
+		}
+
+		if(dir_flag) {
+			size_t len = strlen(cmd.arg);
+			cmd.arg[len - 4]	= '\0';
 		}
 
 		if (send(sock_control, buffer, (int)strlen(buffer), 0) < 0 ) {

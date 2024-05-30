@@ -52,6 +52,25 @@ int socket_accept(int sock_listen)
 	return sockfd;
 }
 
+int is_directory(const char *dir_name) {
+    DIR *dir = opendir(".");
+    if (dir == NULL) {
+        perror("opendir");
+        return 0;
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_type == DT_DIR && strcmp(entry->d_name, dir_name) == 0) {
+            closedir(dir);
+            return 1;
+        }
+    }
+
+    closedir(dir);
+    return 0;
+}
+
 
 
 

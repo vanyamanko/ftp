@@ -7,7 +7,7 @@
 #include "client_utils.h"
 
 void read_input(char* buffer, int size);
-int client_read_command(char* buf, int size, struct command *cstruct);
+int client_read_command(char* buf, int size, struct command *cstruct, int* dir_flag);
 void client_login(int sock_control);
 
 #endif

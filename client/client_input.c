@@ -11,7 +11,7 @@ void read_input(char* buffer, int size)
 	}
 }
 
-int client_read_command(char* buf, int size, struct command *cstruct)
+int client_read_command(char* buf, int size, struct command *cstruct, int* dir_flag)
 {
 	memset(cstruct->code, 0, sizeof(cstruct->code));
 	memset(cstruct->arg, 0, sizeof(cstruct->arg));
@@ -47,6 +47,10 @@ int client_read_command(char* buf, int size, struct command *cstruct)
 	}
 	else if (strcmp(buf, "put") == 0) {
 		strcpy(cstruct->code, "STOR");
+		if(is_directory(arg)) {
+			strcat(cstruct->arg, ".zip");
+			*dir_flag = 1;
+		}
 	}
 	else if (strcmp(buf, "cwd") == 0) {
 		strcpy(cstruct->code, "CWD");

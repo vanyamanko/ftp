@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 			cmd.arg[len - 4]	= '\0';
 		}
 
-		if (send(sock_control, buffer, (int)strlen(buffer), 0) < 0 ) {
+		if (send(sock_control, buffer, strlen(buffer), 0) < 0 ) {
 			close(sock_control);
 			exit(1);
 		}

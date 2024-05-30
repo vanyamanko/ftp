@@ -44,7 +44,15 @@ void client_info(void)
     fprintf(file, "DESCRIPTION\n");
     fprintf(file, "     The delete command removes a file from the server.\n\n\n\n");
 
-	fprintf(file, "QUIT(6)\n\n");
+    fprintf(file, "CWD(6)\n\n");
+    fprintf(file, "NAME\n");
+    fprintf(file, "     cwd - change directory on server\n\n");
+	fprintf(file, "SYNOPSIS\n");
+	fprintf(file, "     cwd <dir_name>\n\n");
+    fprintf(file, "DESCRIPTION\n");
+    fprintf(file, "     The cwd command changes the working directory on the server.\n\n\n\n");
+
+	fprintf(file, "QUIT(7)\n\n");
     fprintf(file, "NAME\n");
     fprintf(file, "      quit - exit the program\n\n");
     fprintf(file, "DESCRIPTION\n");
